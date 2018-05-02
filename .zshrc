@@ -56,13 +56,6 @@ plugins=(git autojump)
 autoload -U +X bashcompinit && bashcompinit
 
 source $ZSH/oh-my-zsh.sh
-alias vim=nvim
-
-export PATH=~/.local/bin/:$PATH
-export PATH=/usr/java/jre1.8.0_161/bin:$PATH
-export PATH=/opt/Xilinx/Vivado/2017.2/bin:$PATH
-export PATH=~/intelFPGA/16.1/modelsim_ase/linuxaloem:$PATH
-
 
 # User configuration
 
@@ -96,5 +89,4 @@ export PATH=~/intelFPGA/16.1/modelsim_ase/linuxaloem:$PATH
 #
 
 # Autojump
-source /usr/share/autojump/autojump.zsh
 alias glog='git log --graph'

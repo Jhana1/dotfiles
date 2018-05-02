@@ -1,21 +1,3 @@
-call plug#begin('~/.local/share/nvim/plugged')
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'airblade/vim-gitgutter'
-"Plug 'parsonsmatt/intero-neovim'
-"Plug 'eagletmt/neco-ghc'
-Plug 'nbouscal/vim-stylish-haskell'
-Plug 'neomake/neomake'
-Plug 'ervandew/supertab'
-Plug 'itchyny/vim-haskell-indent'
-Plug 'autozimu/LanguageClient-neovim'
-Plug 'vim-airline/vim-airline'
-Plug 'zchee/deoplete-clang'
-Plug 'Shougo/neoinclude.vim'
-Plug 'rhysd/vim-clang-format'
-
-call plug#end()
-
 " Mouse Mode
 set mouse=a
 
