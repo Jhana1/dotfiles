@@ -1,0 +1,63 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	abbrev = 12
+[user]
+	name = James Anastasiou
+	email = james.anastasiou@gmail.com
+[pretty]
+	la = tformat:%C(yellow)%h%Creset%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%ad%Creset
+	la-nc = tformat:%h%d %s <%an> %ad
+[alias]
+	ll = log --oneline --decorate -20
+	la = log --pretty=la --decorate --date=short -20
+	lanc = log --pretty=la-nc --decorate --date=short -20
+	logc = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-HEAD} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git log $a $r^..$r -- $f\"; }; f"
+	lc = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-HEAD} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git ll $a $r^..$r -- $f\"; }; f"
+	diffc = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-HEAD} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git diff $a $r^..$r -- $f\"; }; f"
+	loginc = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-'@{u}'} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git log $a ..$r -- $f\"; }; f"
+	linc = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-'@{u}'} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git ll $a ..$r -- $f\"; }; f"
+	logout = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-'@{u}'} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git log $a $r.. -- $f\"; }; f"
+	lout = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-'@{u}'} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git ll $a $r.. -- $f\"; }; f"
+	diffinc = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-'@{u}'} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git diff $a ...$r -- $f\"; }; f"
+	diffout = "!f() { local r a f; r=`git rev-parse --revs-only \"$@\"` && r=${r:-'@{u}'} && a=`git rev-parse --sq --no-revs --flags \"$@\"` && f=`git rev-parse --sq --no-revs --no-flags \"$@\"` && cd ./$GIT_PREFIX && eval \"git diff $a $r... -- $f\"; }; f"
+	unstage = reset HEAD --
+	remerge = checkout -m --conflict=diff3 --
+	st = status -sb
+	ci = commit
+	co = checkout
+	ix = diff --cached
+	fixup = commit --amend -C HEAD
+	rup = remote -v update
+	f = !git ls-files -c -o --exclude-standard | grep --color=auto -i
+	aliases = !git config -l | grep ^alias\\. | cut -c 7-
+	info = for-each-ref --format=\"%(refname:short)  <=  %(upstream:short)\" refs/heads
+	jira = "!f() { local r=${1:-HEAD}; git log -1 --pretty=\"tformat:Id:      $(git describe --abbrev=12 --long $r)%nDate:    %ci%nAuthor:  %an <%ae>%w(70,4,4)%n%n%-s%n%n%-b\" $r; }; f"
+[color]
+	ui = auto
+[diff]
+	renames = copy
+	mnemonicprefix = true
+[gc]
+	pruneexpire = 6.month.ago
+	reflogexpire = 6.month.ago
+	reflogexpireunreachable = 6.month.ago
+[gui]
+	fastcopyblame = true
+[log]
+	date = iso
+[merge]
+	renameLimit = 10000
+[pack]
+	compression = 9
+[pager]
+	ll = false
+	la = false
+	lanc = false
+	jira = false
+[push]
+	default = simple
+[transfer]
+	fsckObjects = true
