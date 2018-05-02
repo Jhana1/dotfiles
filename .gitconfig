@@ -6,7 +6,7 @@
 	abbrev = 12
 [user]
 	name = James Anastasiou
-	email = james.anastasiou@gmail.com
+	email = james.anastasiou@tibra.com
 [pretty]
 	la = tformat:%C(yellow)%h%Creset%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%ad%Creset
 	la-nc = tformat:%h%d %s <%an> %ad
