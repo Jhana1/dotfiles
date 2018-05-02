@@ -1,0 +1,1 @@
+/home/winnt/TIBRA/james.anastasiou/.config/nvim/init.vim
