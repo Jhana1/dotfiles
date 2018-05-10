@@ -153,11 +153,18 @@ let g:LanguageClient_serverCommands = {
   \ 'python': ['pyls'],
   \ }
 
+au User lsp_setup call lsp#register_server({
+      \ 'name': 'clangd',
+      \ 'cmd': {server_info->['clangd']},
+      \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+      \ })
+
 augroup cpp
   autocmd!
   autocmd FileType cpp set tabstop=4
   autocmd FileType cpp set shiftwidth=4
   autocmd FileType cpp set matchpairs+=<:>
+
 
   let g:deoplete#sources#clang#libclang_path = "/package/clang-3.9.1/lib/libclang.so"
   let g:deoplete#sources#clang#clang_header = "/package/clang-3.9.1/include/"
