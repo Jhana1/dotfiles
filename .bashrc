@@ -9,6 +9,7 @@ export PATH=/package/gcc-7.2.0/bin:$PATH
 export PATH=/package/clang-5.0.1/bin:$PATH
 export PATH=/package/binutils-2.28/bin:$PATH
 export PATH=/usr/lib64/ccache:$PATH
+export PATH=~/.local/bin:$PATH
 export LD_LIBRARY_PATH=/package/gcc-7.2.0/lib64:$LD_LIBRARY_PATH
 
 export QUARTUS_ROOT_DIR=~/intelFPGA/16.1
