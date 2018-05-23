@@ -14,7 +14,7 @@ autoload -U +X bashcompinit && bashcompinit
 source $ZSH/oh-my-zsh.sh
 alias vim=nvim
 
-
+alias please='sudo $(fc -ln -1)'
 alias config='/usr/bin/git --git-dir=/home/winnt/TIBRA/james.anastasiou/.cfg/ --work-tree=/home/winnt/TIBRA/james.anastasiou'
 
 # Autojump
