@@ -19,4 +19,8 @@ alias config='/usr/bin/git --git-dir=/home/winnt/TIBRA/james.anastasiou/.cfg/ --
 
 # Autojump
 source /usr/share/autojump/autojump.zsh
-alias glog='git log --graph'
+
+# Auto Push Directories
+DIRSTACKSIZE=8
+setopt autopushd pushdminus pushdsilent pushdtohome
+alias dh='dirs -v'
