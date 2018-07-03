@@ -80,8 +80,8 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # screenshot current window
-bindsym $mod+ctrl+shift+3 exec --no-startup-id "gnome-screenshot -w"
-bindsym $mod+ctrl+shift+4 exec --no-startup-id "gnome-screenshot -w -c"
+bindsym $win+3 exec --no-startup-id "gnome-screenshot -w"
+bindsym $win+4 exec --no-startup-id "gnome-screenshot -w -c"
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -126,6 +126,9 @@ bindsym $mod+Shift+b move container to workspace bjdev01
 bindsym $mod+Shift+l move container to workspace lcdev04
 bindsym $mod+Shift+o move workspace to output left
 
+
+# lock screen
+bindsym $win+l exec "lock"
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -146,17 +149,18 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym $win+Shift+r mode "resize"
+bindsym $win+r mode "resize"
 
 mode "volume" {
-        bindsym Up exec amixer -D pulse sset Master 1%+
-        bindsym Down exec amixer -D pulse sset Master 1%-
-        bindsym m exec amixer -D pulse sset Master toggle
+        bindsym Up exec pactl set-sink-volume 0 +1%
+        bindsym Down exec pactl set-sink-volume 0 -1%
+        bindsym m exec pactl set-sink-mute 0 toggle
+        bindsym r exec pactl set-sink-volume 0 0%
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
 
-bindsym $win+Shift+v mode "volume"
+bindsym $win+v mode "volume"
 
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -174,6 +178,7 @@ exec --no-startup-id i3-msg 'workspace Mail; exec /usr/bin/evolution'
 exec --no-startup-id i3-msg 'workspace Teams; exec /usr/local/bin/teams'
 
 exec /usr/libexec/notification-daemon
+exec xautolock -time 15 -locker 'lock' &
 
 # No Border Around Certain Windows
 for_window [class="^.*chrome.*"] border pixel 1
