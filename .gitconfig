@@ -40,6 +40,9 @@
 [diff]
 	renames = copy
 	mnemonicprefix = true
+	tool = meld
+[difftool "nvimdiff"]
+        cmd="nvim -d -u ~/.nvimrc \"$LOCAL\" \"$REMOTE\""
 [gc]
 	pruneexpire = 6.month.ago
 	reflogexpire = 6.month.ago
@@ -60,4 +63,9 @@
 [push]
 	default = simple
 [transfer]
-	fsckObjects = true
+	fsckobjects = false
+[fetch]
+        fsckobjects = false
+[receive]
+        fsckobjects = false
+
