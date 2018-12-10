@@ -2,6 +2,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'airblade/vim-gitgutter'
+Plug 'Valloric/YouCompleteMe'
 "Plug 'parsonsmatt/intero-neovim'
 "Plug 'eagletmt/neco-ghc'
 Plug 'nbouscal/vim-stylish-haskell'
@@ -10,9 +11,11 @@ Plug 'ervandew/supertab'
 Plug 'itchyny/vim-haskell-indent'
 Plug 'autozimu/LanguageClient-neovim'
 Plug 'vim-airline/vim-airline'
-Plug 'zchee/deoplete-clang'
 Plug 'Shougo/neoinclude.vim'
 Plug 'rhysd/vim-clang-format'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'othree/xml.vim'
 
 call plug#end()
 
@@ -52,7 +55,7 @@ set ignorecase
 set smartcase
 
 " Path
-set path+=~/build/trunk/tibra/trunk/
+set path+=~/build/trunk-gcc/tibra/trunk/
 set path+=~/repos/trunk/
 
 " Saving
@@ -131,42 +134,41 @@ augroup haskell
     autocmd FileType haskell nnoremap <buffer> <Leader>hh :call LanguageClient_textDocument_hover() <CR>
     autocmd FileType haskell nnoremap <buffer> <Leader>hr :call LanguageClient_textDocument_references() <CR>
     autocmd FileType haskell nnoremap <buffer> <Leader>hf :call LanguageClient_textDocument_formatting() <CR>
-    autocmd FileType haskell set tabstop=2
-    autocmd FileType haskell set shiftwidth=2
 augroup end
 
 augroup cpp
     autocmd!
-    autocmd FileType cpp nnoremap <buffer> gd :call LanguageClient_textDocument_definition() <CR>
-    autocmd FileType cpp nnoremap <buffer> <Leader>hi :call LanguageClient_textDocument_hover() <CR>
-    autocmd FileType cpp nnoremap <buffer> <Leader>ht :call LanguageClient_textDocument_hover() <CR>
-    autocmd FileType cpp nnoremap <buffer> <Leader>hh :call LanguageClient_textDocument_hover() <CR>
-    autocmd FileType cpp nnoremap <buffer> <Leader>hr :call LanguageClient_textDocument_references() <CR>
+    autocmd FileType cpp nnoremap <buffer> gd :YcmCompleter GoToImprecise <CR>
+    autocmd FileType cpp nnoremap <buffer> <Leader>gt :YcmCompleter GetTypeImprecise <CR>
     autocmd FileType cpp set tabstop=4
     autocmd FileType cpp set shiftwidth=4
+    autocmd FileType cpp set matchpairs+=<:>
+    autocmd FileType cpp nnoremap <buffer> <Leader>gi :YcmCompleter GoToInclude<CR>
+    autocmd FileType cpp nnoremap <buffer> <Leader>gfi :e %:r.ipp<CR>
+    autocmd FileType cpp nnoremap <buffer> <Leader>gfc :e %:r.cpp<CR>
+    autocmd FileType cpp nnoremap <buffer> <Leader>gfh :e %:r.hpp<CR>
+    autocmd FileType cpp cs add /home/winnt/TIBRA/james.anastasiou/repos/trunk/cscope.out
+    autocmd FileType cpp nnoremap <buffer> <Leader>fs :cs find s <C-R><C-W><CR>
+    autocmd FileType cpp nnoremap <buffer> <Leader>fsc :cs find s 
+    autocmd FileType cpp nnoremap <buffer> <Leader>fi :cs find i %:t<CR>
+    autocmd FileType cpp nnoremap <buffer> <Leader>fd :cs find g <C-R><C-W><CR>
+    autocmd FileType cpp nnoremap <buffer> <Leader>fdc :cs find g 
+    autocmd FileType cpp nnoremap <buffer> <Leader>ff :cs find d <C-R><C-W><CR>
+    autocmd FileType cpp if expand('%:p') =~ "trunk" | cd ~/repos/trunk | endif
+augroup end
+
+augroup xml
+    autocmd!
+    autocmd FileType xml set tabstop=2
+    autocmd FileType xml set shiftwidth=2
+    autocmd FileType xml set matchpairs+=<:>
+    autocmd FileType xsd set tabstop=2
+    autocmd FileType xsd set shiftwidth=2
+    autocmd FileType xsd set matchpairs+=<:>
 augroup end
 
 " Haskell IDE Engine
 let g:LanguageClient_serverCommands = {
-  \ 'haskell': ['hie', '--lsp'],
-  \ 'cpp': ['clangd'],
+  \ 'haskell': ['hie', '--lsp', '-r', '${HOME}/repos/hardware/haskell/'],
   \ 'python': ['pyls'],
   \ }
-
-au User lsp_setup call lsp#register_server({
-      \ 'name': 'clangd',
-      \ 'cmd': {server_info->['clangd']},
-      \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-      \ })
-
-augroup cpp
-  autocmd!
-  autocmd FileType cpp set tabstop=4
-  autocmd FileType cpp set shiftwidth=4
-  autocmd FileType cpp set matchpairs+=<:>
-
-
-  let g:deoplete#sources#clang#libclang_path = "/package/clang-3.9.1/lib/libclang.so"
-  let g:deoplete#sources#clang#clang_header = "/package/clang-3.9.1/include/"
-  let g:deoplete#sources#clang#clang_complete_database = "~/build/trunk/"
-augroup end
