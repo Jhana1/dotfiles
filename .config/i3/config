@@ -46,25 +46,20 @@ bindsym $mod+d exec dmenu_run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
+bindsym $mod+Left  focus left
+bindsym $mod+Down  focus down
+bindsym $mod+Up    focus up
 bindsym $mod+Right focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
 bindsym $mod+Shift+Right move right
 
-# split in horizontal orientation
+# split orientation
 bindsym $mod+h split h
-
-# split in vertical orientation
 bindsym $mod+v split v
-
-# enter fullscreen mode for the focused container
-# bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+w layout tabbed
@@ -124,8 +119,9 @@ bindsym $mod+Shift+t move container to workspace Teams
 bindsym $mod+Shift+i move container to workspace Docs
 bindsym $mod+Shift+b move container to workspace bjdev01
 bindsym $mod+Shift+l move container to workspace lcdev04
-bindsym $mod+Shift+o move workspace to output left
 
+# move focused workspace to opposite screen
+bindsym $mod+Shift+o move workspace to output    left
 
 # lock screen
 bindsym $win+l exec "lock"
@@ -139,10 +135,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-        bindsym Left resize shrink width 1 px or 1 ppt
-        bindsym Down resize grow height 1 px or 1 ppt
-        bindsym Up resize shrink height 1 px or 1 ppt
-        bindsym Right resize grow width 1 px or 1 ppt
+        bindsym Left  resize shrink width  1 px or 1 ppt
+        bindsym Down  resize grow   height 1 px or 1 ppt
+        bindsym Up    resize shrink height 1 px or 1 ppt
+        bindsym Right resize grow   width  1 px or 1 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -151,17 +147,60 @@ mode "resize" {
 
 bindsym $win+r mode "resize"
 
-mode "volume" {
-        bindsym Up exec pactl set-sink-volume 0 +1%
-        bindsym Down exec pactl set-sink-volume 0 -1%
-        bindsym m exec pactl set-sink-mute 0 toggle
-        bindsym r exec pactl set-sink-volume 0 0%
+
+set $chat 1
+set $game 2
+
+# Media Controls
+mode "volume-game" {
+        bindsym Up     exec pactl set-sink-volume $game +1%
+        bindsym Down   exec pactl set-sink-volume $game -1%
+        bindsym m      exec pactl set-sink-mute   $game toggle
+        bindsym r      exec pactl set-sink-volume $game 0%
         bindsym Return mode "default"
         bindsym Escape mode "default"
+        bindsym g      mode "volume-game"
+        bindsym $win+g mode "volume-game"
+        bindsym c      mode "volume-chat"
+        bindsym $win+c mode "volume-chat"
+        bindsym v      mode "volume"
+        bindsym $win+v mode "volume"
 }
 
-bindsym $win+v mode "volume"
+mode "volume-chat" {
+        bindsym Up     exec pactl set-sink-volume $chat +1%
+        bindsym Down   exec pactl set-sink-volume $chat -1%
+        bindsym m      exec pactl set-sink-mute   $chat toggle
+        bindsym r      exec pactl set-sink-volume $chat 0%
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym g      mode "volume-game"
+        bindsym $win+g mode "volume-game"
+        bindsym c      mode "volume-chat"
+        bindsym $win+c mode "volume-chat"
+        bindsym v      mode "volume"
+        bindsym $win+v mode "volume"
+}
 
+mode "volume" {
+        bindsym Up     exec pactl set-sink-volume $chat +1%    && pactl set-sink-volume $game +1%
+        bindsym Down   exec pactl set-sink-volume $chat -1%    && pactl set-sink-volume $game -1%
+        bindsym m      exec pactl set-sink-mute   $chat toggle && pactl set-sink-mute   $game toggle
+        bindsym r      exec pactl set-sink-volume $chat 0%     && pactl set-sink-volume $game 0%
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym g      mode "volume-game"
+        bindsym $win+g mode "volume-game"
+        bindsym c      mode "volume-chat"
+        bindsym $win+c mode "volume-chat"
+}
+
+bindsym $win+v     mode "volume"
+bindsym $win+p     exec spotify-control toggle
+bindsym $win+Right exec spotify-control next
+bindsym $win+Left  exec spotify-control prev
+bindsym $win+Up    exec pactl set-sink-volume $chat +1% && pactl set-sink-volume $game +1%
+bindsym $win+Down  exec pactl set-sink-volume $chat -1% && pactl set-sink-volume $game -1%
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -169,16 +208,14 @@ bar {
         status_command i3status -c ~/.config/i3status/config
 }
 
-
 # Autostart Applications
-exec --no-startup-id i3-msg 'workspace Internet; exec /usr/bin/google-chrome'
-#move Firefox to left
-exec --no-startup-id i3-msg 'workspace Mail; exec /usr/bin/evolution'
+exec --startup-id i3-msg 'workspace Internet; exec /usr/bin/google-chrome; move workspace to primary'
+exec --no-startup-id i3-msg 'workspace Mail; exec /usr/bin/evolution; move workspace to DVI-I-1'
 #move Mail to output left
-exec --no-startup-id i3-msg 'workspace Teams; exec /usr/local/bin/teams'
+exec --no-startup-id i3-msg 'workspace Teams; exec /usr/local/bin/teams; move workspace to DVI-I-1'
 
 exec /usr/libexec/notification-daemon
-exec xautolock -time 15 -locker 'lock' &
+exec xautolock -time 15 -locker "lock"
 
 # No Border Around Certain Windows
 for_window [class="^.*chrome.*"] border pixel 1
