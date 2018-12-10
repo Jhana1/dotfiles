@@ -13,6 +13,8 @@ autoload -U +X bashcompinit && bashcompinit
 
 source $ZSH/oh-my-zsh.sh
 alias vim=nvim
+alias vum=nvim
+alias vun=nvim
 
 alias please='sudo $(fc -ln -1)'
 alias config='/usr/bin/git --git-dir=/home/winnt/TIBRA/james.anastasiou/.cfg/ --work-tree=/home/winnt/TIBRA/james.anastasiou'
@@ -24,3 +26,9 @@ source /usr/share/autojump/autojump.zsh
 DIRSTACKSIZE=8
 setopt autopushd pushdminus pushdsilent pushdtohome
 alias dh='dirs -v'
+alias vimdiff='nvim -d'
+
+# Remap Escape
+setxkbmap -option caps:escape
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
