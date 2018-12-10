@@ -35,3 +35,5 @@ export ALTERAOCLSDKROOT="/home/winnt/TIBRA/james.anastasiou/intelFPGA/16.1/hld"
 
 export QSYS_ROOTDIR="/home/winnt/TIBRA/james.anastasiou/intelFPGA/16.1/quartus/sopc_builder/bin"
 alias config='/usr/bin/git --git-dir=/home/winnt/TIBRA/james.anastasiou/.cfg/ --work-tree=/home/winnt/TIBRA/james.anastasiou'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
