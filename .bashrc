@@ -10,7 +10,7 @@ export PATH=/package/clang-6.0.0/bin:$PATH
 export PATH=/package/binutils-2.28/bin:$PATH
 export PATH=/usr/lib64/ccache:$PATH
 export PATH=~/.local/bin:$PATH
-export LD_LIBRARY_PATH=/package/gcc-7.2.0/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/package/gcc-7.3.0/lib64:/package/gcc-7.3.0/lib:$LD_LIBRARY_PATH
 
 export QUARTUS_ROOT_DIR=~/intelFPGA/16.1
 export PATH=$QUARTUS_ROOTDIR/nios2eds:$QUARTUS_ROOTDIR/quartus/bin:$QUARTUS_ROOTDIR/quartus_sopcbuilder/bin:$PATH

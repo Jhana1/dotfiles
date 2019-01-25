@@ -44,22 +44,32 @@ bindsym $mod+d exec dmenu_run
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+# Vim Keybindings
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left  focus left
-bindsym $mod+Down  focus down
-bindsym $mod+Up    focus up
-bindsym $mod+Right focus right
+#bindsym $mod+Left  focus left
+#bindsym $mod+Down  focus down
+#bindsym $mod+Up    focus up
+#bindsym $mod+Right focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left  move left
-bindsym $mod+Shift+Down  move down
-bindsym $mod+Shift+Up    move up
-bindsym $mod+Shift+Right move right
+#bindsym $mod+Shift+Left  move left
+#bindsym $mod+Shift+Down  move down
+#bindsym $mod+Shift+Up    move up
+#bindsym $mod+Shift+Right move right
 
 # split orientation
-bindsym $mod+h split h
-bindsym $mod+v split v
+bindsym $mod+backslash split h
+bindsym $mod+minus split v
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+w layout tabbed
@@ -98,7 +108,6 @@ bindsym $mod+x workspace Scratch
 bindsym $mod+t workspace Teams
 bindsym $mod+i workspace Docs
 bindsym $mod+b workspace bjdev01
-bindsym $mod+l workspace lcdev04
 bindsym $mod+q workspace Music
 
 # move focused container to workspace
@@ -118,7 +127,6 @@ bindsym $mod+Shift+x move container to workspace Scratch
 bindsym $mod+Shift+t move container to workspace Teams
 bindsym $mod+Shift+i move container to workspace Docs
 bindsym $mod+Shift+b move container to workspace bjdev01
-bindsym $mod+Shift+l move container to workspace lcdev04
 
 # move focused workspace to opposite screen
 bindsym $mod+Shift+o move workspace to output    left

@@ -32,3 +32,5 @@ alias vimdiff='nvim -d'
 setxkbmap -option caps:escape
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+

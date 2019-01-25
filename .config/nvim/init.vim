@@ -3,8 +3,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'airblade/vim-gitgutter'
 Plug 'Valloric/YouCompleteMe'
-"Plug 'parsonsmatt/intero-neovim'
-"Plug 'eagletmt/neco-ghc'
 Plug 'nbouscal/vim-stylish-haskell'
 Plug 'neomake/neomake'
 Plug 'ervandew/supertab'
@@ -15,12 +13,18 @@ Plug 'Shougo/neoinclude.vim'
 Plug 'rhysd/vim-clang-format'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'othree/xml.vim'
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
 " Mouse Mode
 set mouse=a
+
+" TMux Compatibility
+set guicursor=
+:autocmd OptionSet guicursor noautocmd set guicursor=
 
 " Status
 set laststatus=2
@@ -31,12 +35,13 @@ set t_Co=256
 set bg=dark
 colorscheme delek
 set number
-set cursorline
 set showmode
 set nowrap
 set scrolloff=3
 set sidescroll=1
 highlight clear SignColumn
+set fillchars+=vert:\│
+hi VertSplit cterm=NONE
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
@@ -57,12 +62,17 @@ set smartcase
 " Path
 set path+=~/build/trunk-gcc/tibra/trunk/
 set path+=~/repos/trunk/
+set path+=~/build/trunk-gcc/packages/boost/1.68.0g-src/boost
 
 " Saving
 com! WQ wq
 com! Wq wq
 com! W w
 com! Q q
+
+" Semicolon
+map ; :
+noremap ;; ;
 
 " Menu
 set wildmenu
@@ -95,15 +105,32 @@ match ExtraWhitespace /\s\+$/
 " Toggle Line Numbers
 nmap <F5> :set invnumber<CR>
 
+" Disable Directional Keys
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+vmap <up> <nop>
+vmap <down> <nop>
+vmap <left> <nop>
+vmap <right> <nop>
+
 " Window and Buffer Commands
-nmap <Leader>w<Up> :wincmd k<CR>
-nmap <Leader>w<Left> :wincmd h<CR>
-nmap <Leader>w<Right> :wincmd l<CR>
-nmap <Leader>w<Down> :wincmd j<CR>
-nmap <Leader>ws :split<CR>
-nmap <Leader>wv :vsplit<CR>
-nmap <Leader>b<Right> :bnext<CR>
-nmap <Leader>b<Left> :bprevious<CR>
+" Change window
+
+" Move Window
+nmap <Leader><C-h> :wincmd H<CR>
+nmap <Leader><C-j> :wincmd J<CR>
+nmap <Leader><C-k> :wincmd K<CR>
+nmap <Leader><C-l> :wincmd L<CR>
+
+" Buffers
+nmap <C-p> :bprevious<CR>
+nmap <C-n> :bnext<CR>
 nmap <Leader>bn :enew<CR>
 nmap <Leader>bq :bp <BAR> bd #<CR>
 
@@ -125,6 +152,15 @@ augroup omnifuncs
     autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 augroup end
 
+augroup CursorLine
+    au!
+    au VimEnter * setlocal cursorline
+    au WinEnter * setlocal cursorline
+    au BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+augroup END
+
+" Languages
 augroup haskell
     autocmd!
     let g:LanguageClient_autoStart = 1
@@ -134,6 +170,8 @@ augroup haskell
     autocmd FileType haskell nnoremap <buffer> <Leader>hh :call LanguageClient_textDocument_hover() <CR>
     autocmd FileType haskell nnoremap <buffer> <Leader>hr :call LanguageClient_textDocument_references() <CR>
     autocmd FileType haskell nnoremap <buffer> <Leader>hf :call LanguageClient_textDocument_formatting() <CR>
+    autocmd FileType haskell highlight ColorColumn ctermbg=235
+    autocmd FileType haskell let &colorcolumn="80,".join(range(120,999),",")
 augroup end
 
 augroup cpp
@@ -147,6 +185,7 @@ augroup cpp
     autocmd FileType cpp nnoremap <buffer> <Leader>gfi :e %:r.ipp<CR>
     autocmd FileType cpp nnoremap <buffer> <Leader>gfc :e %:r.cpp<CR>
     autocmd FileType cpp nnoremap <buffer> <Leader>gfh :e %:r.hpp<CR>
+    autocmd FileType cpp set nocscopeverbose
     autocmd FileType cpp cs add /home/winnt/TIBRA/james.anastasiou/repos/trunk/cscope.out
     autocmd FileType cpp nnoremap <buffer> <Leader>fs :cs find s <C-R><C-W><CR>
     autocmd FileType cpp nnoremap <buffer> <Leader>fsc :cs find s 
@@ -155,6 +194,8 @@ augroup cpp
     autocmd FileType cpp nnoremap <buffer> <Leader>fdc :cs find g 
     autocmd FileType cpp nnoremap <buffer> <Leader>ff :cs find d <C-R><C-W><CR>
     autocmd FileType cpp if expand('%:p') =~ "trunk" | cd ~/repos/trunk | endif
+    autocmd FileType cpp highlight ColorColumn ctermbg=235
+    autocmd FileType cpp let &colorcolumn="100,".join(range(120,999),",")
 augroup end
 
 augroup xml
@@ -162,9 +203,15 @@ augroup xml
     autocmd FileType xml set tabstop=2
     autocmd FileType xml set shiftwidth=2
     autocmd FileType xml set matchpairs+=<:>
-    autocmd FileType xsd set tabstop=2
-    autocmd FileType xsd set shiftwidth=2
-    autocmd FileType xsd set matchpairs+=<:>
+augroup end
+
+augroup javascript
+    autocmd!
+    autocmd FileType javascript set tabstop=2
+    autocmd FileType javascript set shiftwidth=2
+    autocmd FileType javascript set matchpairs+=<:>
+    autocmd FileType javascript highlight ColorColumn ctermbg=235
+    autocmd FileType javascript let &colorcolumn="100,".join(range(120,999),",")
 augroup end
 
 " Haskell IDE Engine
@@ -172,3 +219,7 @@ let g:LanguageClient_serverCommands = {
   \ 'haskell': ['hie', '--lsp', '-r', '${HOME}/repos/hardware/haskell/'],
   \ 'python': ['pyls'],
   \ }
+
+" Undofile
+set undofile
+set undodir=~/.local/share/nvim/undodir
