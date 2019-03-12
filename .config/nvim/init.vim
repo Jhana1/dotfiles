@@ -16,6 +16,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'othree/xml.vim'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'scrooloose/nerdtree'
 
 call plug#end()
 
@@ -52,6 +53,10 @@ set smarttab
 set autoindent
 set smartindent
 
+" Code Folding
+hi! Folded ctermbg=233 ctermfg=247
+set fillchars+=fold:\ 
+
 " Search
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
 set incsearch
@@ -60,9 +65,9 @@ set ignorecase
 set smartcase
 
 " Path
-set path+=~/build/trunk-gcc/tibra/trunk/
+set path+=~/build/trunk.gcc/tibra/trunk/
 set path+=~/repos/trunk/
-set path+=~/build/trunk-gcc/packages/boost/1.68.0g-src/boost
+set path+=~/build/trunk.gcc/packages/boost/1.68.0g-src/boost
 
 " Saving
 com! WQ wq
@@ -96,14 +101,14 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 
 " Python
 let g:python_host_prog  = "python2.7"
-let g:python3_host_prog = "python3"
+let g:python3_host_prog = "python3.7"
 
 " Whitespace Highlighting
 highlight ExtraWhitespace ctermbg=red
 match ExtraWhitespace /\s\+$/
 
-" Toggle Line Numbers
-nmap <F5> :set invnumber<CR>
+" Line Numbers
+hi LineNr ctermfg=237
 
 " Disable Directional Keys
 map <up> <nop>
@@ -125,7 +130,7 @@ vmap <right> <nop>
 " Move Window
 nmap <Leader><C-h> :wincmd H<CR>
 nmap <Leader><C-j> :wincmd J<CR>
-nmap <Leader><C-k> :wincmd K<CR>
+nmap <C-k> :wincmd K<CR>
 nmap <Leader><C-l> :wincmd L<CR>
 
 " Buffers
@@ -143,7 +148,24 @@ set pastetoggle=<F2>
 " Deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_refresh_always = 1
-let g:deoplete#auto_complete_delay = 10
+call deoplete#custom#option('auto_complete', v:false)
+
+" NerdTree
+nnoremap <Leader>f :NERDTreeFind<CR>
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDTreeQuitOnOpen = 1
+
+" GitGutter
+hi! GitGutterAdd ctermbg=black ctermfg=green
+hi! GitGutterChange ctermbg=black ctermfg=11
+hi! GitGutterDelete ctermbg=black ctermfg=red
+hi! GitGutterChangeDelete ctermbg=black ctermfg=11
+let g:gitgutter_sign_added='+'
+let g:gitgutter_sign_changed='~'
+let g:gitgutter_sign_removed='-'
+let g:gitgutter_sign_modified_removed='~'
+let g:gitgutter_enabled=0
 
 " Omnifuncs
 let g:haskellmode_completion_ghc = 0

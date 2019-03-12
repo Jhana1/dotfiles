@@ -18,6 +18,7 @@ alias vun=nvim
 
 alias please='sudo $(fc -ln -1)'
 alias config='/usr/bin/git --git-dir=/home/winnt/TIBRA/james.anastasiou/.cfg/ --work-tree=/home/winnt/TIBRA/james.anastasiou'
+alias tmux='tmux -2'
 
 # Autojump
 source /usr/share/autojump/autojump.zsh
