@@ -4,6 +4,7 @@
 	bare = false
 	logallrefupdates = true
 	abbrev = 12
+	editor = nvim
 [user]
 	name = James Anastasiou
 	email = james.anastasiou@tibra.com

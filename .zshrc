@@ -1,7 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/winnt/TIBRA/james.anastasiou/.oh-my-zsh
 
-ZSH_THEME="obnoxious-bira"
+ZSH_THEME="jimbo"
 
 HYPHEN_INSENSITIVE="true"
 COMPLETION_WAITING_DOTS="true"
@@ -27,11 +27,24 @@ source /usr/share/autojump/autojump.zsh
 DIRSTACKSIZE=8
 setopt autopushd pushdminus pushdsilent pushdtohome
 alias dh='dirs -v'
-alias vimdiff='nvim -d'
 
 # Remap Escape
 setxkbmap -option caps:escape
 
+# Programming Aliases
+alias vimdiff='nvim -d'
+alias ninja='nice ninja'
+
+# Prompt Timeout?
+if [ -z "$TMUX" ]; then
+  TMOUT=60
+fi
+
+TRAPALRM() {
+    zle reset-prompt
+#    if ! [[ "$WIDGET" =~ ^(complete-word|fzf-completion)$ ]]; then
+#        zle reset-prompt
+#    fi
+}
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-

@@ -29,15 +29,15 @@ disk "/" {
         format = "%free"
 }
 
-volume game {
-   format = "VG: %volume"
-   format_muted = "GM: %volume"
-   device = "pulse:2"
-}
-
 volume chat {
    format = "VC: %volume"
    format_muted = "CM: %volume"
-   device = "pulse:1"
+   device = "pulse:alsa_output.usb-SteelSeries_SteelSeries_Arctis_5_00000000-00-S5.analog-chat"
+}
+
+volume game {
+   format = "VG: %volume"
+   format_muted = "GM: %volume"
+   device = "pulse:alsa_output.usb-SteelSeries_SteelSeries_Arctis_5_00000000-00-S5.analog-game"
 }
 

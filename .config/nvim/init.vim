@@ -2,13 +2,13 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'airblade/vim-gitgutter'
-Plug 'Valloric/YouCompleteMe'
 Plug 'nbouscal/vim-stylish-haskell'
 Plug 'neomake/neomake'
 Plug 'ervandew/supertab'
 Plug 'itchyny/vim-haskell-indent'
-Plug 'autozimu/LanguageClient-neovim'
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'Shougo/neoinclude.vim'
 Plug 'rhysd/vim-clang-format'
 Plug 'tpope/vim-fugitive'
@@ -16,29 +16,28 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'othree/xml.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'scrooloose/nerdtree'
+Plug 'Valloric/YouCompleteMe'
+Plug 'johnsyweb/vim-makeshift'
 
 call plug#end()
-
-" Mouse Mode
-set mouse=a
 
 " TMux Compatibility
 set guicursor=
 :autocmd OptionSet guicursor noautocmd set guicursor=
 
 " Status
-set laststatus=2
+set laststatus=1
 set modeline
+
+" Hidden
+set hidden
 
 " Theme
 set t_Co=256
-set bg=dark
-colorscheme delek
+colorscheme badwolf
 set number
 set showmode
 set nowrap
-set scrolloff=3
 set sidescroll=1
 highlight clear SignColumn
 set fillchars+=vert:\│
@@ -46,9 +45,16 @@ hi VertSplit cterm=NONE
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='base16'
+
+" Intuitive Splits
+set splitright
+set splitbelow
 
 " Tabs
 set softtabstop=0 expandtab
+set tabstop=2
+set shiftwidth=2
 set smarttab
 set autoindent
 set smartindent
@@ -74,10 +80,25 @@ com! WQ wq
 com! Wq wq
 com! W w
 com! Q q
+com! SudoWrite w !sudo tee %
 
-" Semicolon
-map ; :
-noremap ;; ;
+" Pretty Error Message
+function! Error(msg)
+  :echohl ErrorMsg
+  :echom "Error: "
+  :echohl None
+  :echon a:msg
+endfunction
+
+" Better keybindings
+noremap ; :
+
+" Terminal Escape
+augroup Terminal
+    au!
+    autocmd TermOpen * setlocal nonumber norelativenumber
+    tnoremap <Leader><Esc> <C-\><C-n>
+augroup END
 
 " Menu
 set wildmenu
@@ -90,6 +111,10 @@ augroup END
 
 " Clang Format
 let g:clang_format#detect_style_file=1
+function! Format()
+  let l:formatdiff = 1
+  pyf /package/clang-6.0.0/share/clang/clang-format.py
+endfunction
 
 " Completion
 highlight Pmenu ctermbg=black ctermfg=white
@@ -101,60 +126,35 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 
 " Python
 let g:python_host_prog  = "python2.7"
-let g:python3_host_prog = "python3.7"
+let g:python3_host_prog = "python3.4"
 
 " Whitespace Highlighting
 highlight ExtraWhitespace ctermbg=red
 match ExtraWhitespace /\s\+$/
 
-" Line Numbers
-hi LineNr ctermfg=237
-
-" Disable Directional Keys
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
-imap <up> <nop>
-imap <down> <nop>
-imap <left> <nop>
-imap <right> <nop>
-vmap <up> <nop>
-vmap <down> <nop>
-vmap <left> <nop>
-vmap <right> <nop>
-
-" Window and Buffer Commands
-" Change window
-
-" Move Window
-nmap <Leader><C-h> :wincmd H<CR>
-nmap <Leader><C-j> :wincmd J<CR>
-nmap <C-k> :wincmd K<CR>
-nmap <Leader><C-l> :wincmd L<CR>
-
 " Buffers
-nmap <C-p> :bprevious<CR>
-nmap <C-n> :bnext<CR>
-nmap <Leader>bn :enew<CR>
-nmap <Leader>bq :bp <BAR> bd #<CR>
+nnoremap <C-p> :bprevious<CR>
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-\> :e #<CR>
 
-" Toggle Paste
-set pastetoggle=<F2>
+" Windows
+nnoremap <C-w>. <C-w>25>
+nnoremap <C-w>, <C-w>25<
 
-" De-highlight after search
-:nnoremap <silent>  :nohl<CR><C-l>
+" FZF
+nnoremap <C-b> :Buffers<CR>
+nnoremap <C-f> :Files<CR>
+
+" Splits in Insert Mode (wow)
+inoremap <C-l> <esc><C-w>l
+inoremap <C-h> <esc><C-w>h
+inoremap <C-j> <esc><C-w>j
+inoremap <C-k> <esc><C-w>k
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_refresh_always = 1
 call deoplete#custom#option('auto_complete', v:false)
-
-" NerdTree
-nnoremap <Leader>f :NERDTreeFind<CR>
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let NERDTreeQuitOnOpen = 1
 
 " GitGutter
 hi! GitGutterAdd ctermbg=black ctermfg=green
@@ -218,13 +218,16 @@ augroup cpp
     autocmd FileType cpp if expand('%:p') =~ "trunk" | cd ~/repos/trunk | endif
     autocmd FileType cpp highlight ColorColumn ctermbg=235
     autocmd FileType cpp let &colorcolumn="100,".join(range(120,999),",")
+    autocmd Filetype cpp nnoremap <buffer> <Leader>ff :call Format()<CR>
+    autocmd Filetype cpp let g:makeshift_root="${HOME}/build/trunk.gcc"
+    autocmd Filetype cpp autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/
 augroup end
 
 augroup xml
     autocmd!
-    autocmd FileType xml set tabstop=2
-    autocmd FileType xml set shiftwidth=2
-    autocmd FileType xml set matchpairs+=<:>
+    autocmd FileType xml,xsd set tabstop=2
+    autocmd FileType xml,xsd set shiftwidth=2
+    autocmd FileType xml,xsd set matchpairs+=<:>
 augroup end
 
 augroup javascript

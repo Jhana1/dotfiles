@@ -12,6 +12,7 @@
 set $mod Mod1
 set $win Mod4
 
+
 #force_xinerama yes
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -106,7 +107,7 @@ bindsym $mod+f workspace Internet
 bindsym $mod+m workspace Mail
 bindsym $mod+x workspace Scratch
 bindsym $mod+t workspace Teams
-bindsym $mod+i workspace Docs
+bindsym $mod+i workspace Juno
 bindsym $mod+b workspace bjdev01
 bindsym $mod+q workspace Music
 
@@ -125,7 +126,7 @@ bindsym $mod+Shift+f move container to workspace Internet
 bindsym $mod+Shift+m move container to workspace Mail
 bindsym $mod+Shift+x move container to workspace Scratch
 bindsym $mod+Shift+t move container to workspace Teams
-bindsym $mod+Shift+i move container to workspace Docs
+bindsym $mod+Shift+i move container to workspace Juno
 bindsym $mod+Shift+b move container to workspace bjdev01
 
 # move focused workspace to opposite screen
@@ -156,8 +157,8 @@ mode "resize" {
 bindsym $win+r mode "resize"
 
 
-set $chat 1
-set $game 2
+set $chat "alsa_output.usb-SteelSeries_SteelSeries_Arctis_5_00000000-00-S5.analog-chat"
+set $game "alsa_output.usb-SteelSeries_SteelSeries_Arctis_5_00000000-00-S5.analog-game"
 
 # Media Controls
 mode "volume-game" {
@@ -230,3 +231,14 @@ for_window [class="^.*chrome.*"] border pixel 1
 for_window [class="^.*Firefox.*"] border pixel 1
 for_window [class="^.*Evolution.*"] border pixel 1
 for_window [class="^.*Minipanel.*"] move container to workspace "Minipanel"
+
+gaps inner 6
+client.focused #f4cf86 #f4cf86 #f4cf86 #f4cf86 #f4cf86
+client.focused_inactive #000000 #000000 #000000 #000000 #000000
+client.urgent #cc0000 #cc0000 #cc0000 #cc0000 #cc0000
+client.unfocused #000000 #000000 #000000 #000000 #000000
+
+
+# No Border Around Single Window
+for_window [class=".*"] border pixel 2
+font pango:DejaVu Sans Mono 0
